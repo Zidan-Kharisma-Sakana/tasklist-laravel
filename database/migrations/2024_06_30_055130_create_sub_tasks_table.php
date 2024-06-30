@@ -14,6 +14,15 @@ return new class extends Migration
         Schema::create('sub_tasks', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->string("title");
+            $table->text("description")->nullable();
+            $table->integer("status")->default(1);
+            $table->dateTime("deadline");
+            $table->foreignId('task_id')->constrained(
+                table: 'tasks',
+                column: 'id',
+                indexName: 'task_subtask_id',
+            );
         });
     }
 
@@ -22,6 +31,12 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // drop existing foreign keys
+        Schema::table('sub_tasks', function (Blueprint $table) {
+            if (Schema::hasColumn('sub_tasks', 'task_id')) {
+                $table->dropForeign(['task_id']);
+            }
+        });
         Schema::dropIfExists('sub_tasks');
     }
 };
