@@ -1,4 +1,5 @@
 <?php
+use Illuminate\Support\ServiceProvider;
 
 return [
 
@@ -54,6 +55,10 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    'frontend_url' => env('APP_FRONTEND_URL', 'http://localhost:3000'),
+
+    'asset_url' => env('ASSET_URL'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
@@ -104,6 +109,22 @@ return [
             explode(',', env('APP_PREVIOUS_KEYS', ''))
         ),
     ],
+
+
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        /*
+         * Package Service Providers...
+         */
+
+        /*
+         * Application Service Providers...
+         */
+        App\Providers\AppServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class
+    ])->toArray(),
 
     /*
     |--------------------------------------------------------------------------
