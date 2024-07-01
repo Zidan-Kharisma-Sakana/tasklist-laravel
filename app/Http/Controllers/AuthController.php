@@ -7,7 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Http\Requests\Auth\SendPasswordResetLinkRequest;
-use App\Http\Resources\Users\UserResource;
+use App\Http\Resources\UserResource;
 use App\Http\Service\AuthService;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -17,6 +17,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -29,8 +30,15 @@ class AuthController extends Controller
         $this->authService = $authService;
     }
 
+    public function hello(): JsonResponse {
+        return response()->json([
+            'status' => 'hello',
+        ]);
+    }
+
     public function register(RegisterRequest $request): JsonResponse
     {
+        Log::info("Register request {email}", ['email'=>$request->email]);
         $this->authService->register($request);
         return response()->json([
             'status' => 'user-created',
@@ -42,15 +50,19 @@ class AuthController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         $token = Auth::attempt($credentials);
+        Log::info($credentials);
+        Log::info("Login request, token: ");
+        Log::info($token);
 
         if (!$token) {
             return response()->json([
                 'status' => 'invalid-credentials',
             ], 401);
         }
-
+        $user = Auth::user();
+        Log::info($user);
         return response()->json([
-            'user'         => new UserResource(Auth::user()),
+            'user'         => new UserResource($user),
             'access_token' => $token,
         ]);
     }
@@ -127,6 +139,7 @@ class AuthController extends Controller
     }
 
     public function verifyEmail(EmailVerificationRequest $request): JsonResponse{
+        LOG::info("Verifying email {email}", ['email'=>$request->user()->email]);
         if ($request->user()->hasVerifiedEmail()) {
             return response()->json([
                 'status' => 'email-already-verified',

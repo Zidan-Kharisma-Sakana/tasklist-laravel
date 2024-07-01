@@ -9,10 +9,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
-use Tymon\JWTAuth\Contracts\JWTSubject;
-class User  extends Authenticatable implements JWTSubject, MustVerifyEmail
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+
+class User  extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.

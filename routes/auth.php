@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/', [AuthController::class, 'hello']);
 
 Route::post('/register', [AuthController::class, 'register'])
     ->name('register');
@@ -17,7 +20,6 @@ Route::post('/forgot-password', [AuthController::class, 'sendPasswordResetEmail'
 
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])
     ->name('password.update');
-
 
 Route::middleware('auth:api')->group(function () {
     Route::post('/email/verification-notification', [AuthController::class, 'resendVerificationEmail'])
