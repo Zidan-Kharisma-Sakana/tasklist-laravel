@@ -17,7 +17,8 @@ class Task extends Model
         'title', // string
         'description',
         'status',
-        'deadline'
+        'deadline',
+        'user_id'
     ];
 
     public function subtasks(): HasMany

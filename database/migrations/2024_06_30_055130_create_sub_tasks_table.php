@@ -32,11 +32,6 @@ return new class extends Migration
     public function down(): void
     {
         // drop existing foreign keys
-        Schema::table('sub_tasks', function (Blueprint $table) {
-            if (Schema::hasColumn('sub_tasks', 'task_id')) {
-                $table->dropForeign(['task_id']);
-            }
-        });
         Schema::dropIfExists('sub_tasks');
     }
 };

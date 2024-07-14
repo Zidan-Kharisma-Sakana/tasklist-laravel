@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string("title");
             $table->text("description")->nullable();
             $table->integer("status")->default(1);
-            $table->dateTime("deadline");
+            $table->dateTime("deadline")->nullable();
             $table->foreignId('user_id')->constrained(
                 table: 'users',
                 column: 'id',
@@ -32,11 +32,6 @@ return new class extends Migration
     public function down(): void
     {
         // drop existing foreign keys
-        Schema::table('tasks', function (Blueprint $table) {
-            if (Schema::hasColumn('tasks', 'user_id')) {
-                $table->dropForeign(['user_id']);
-            }
-        });
         Schema::dropIfExists('tasks');
     }
 };
