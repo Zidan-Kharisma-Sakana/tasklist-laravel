@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Log;
 use Laravel\Sanctum\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
@@ -65,6 +66,7 @@ class User  extends Authenticatable implements MustVerifyEmail, JWTSubject
 
     public function sendEmailVerificationNotification()
     {
+        Log::info("Sending email verification");
         $this->notify(new QueuedVerifyEmail);
     }
 }

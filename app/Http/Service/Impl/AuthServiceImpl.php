@@ -8,8 +8,10 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 
-class AuthServiceImpl implements AuthService{
-    public function register(RegisterRequest $req){
+class AuthServiceImpl implements AuthService
+{
+    public function register(RegisterRequest $req)
+    {
         $user = User::create([
             'name'     => $req->input('name'),
             'email'    =>  $req->input('email'),

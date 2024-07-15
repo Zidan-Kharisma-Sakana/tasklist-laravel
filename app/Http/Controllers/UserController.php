@@ -20,6 +20,7 @@ class UserController extends Controller {
         return new UserResource($request->user());
     }
 
+    // TODO: Implement update user
     public function update(UpdateUserRequest $request): UserResource{
         return new UserResource($this->userService->updateUser($request));
     }

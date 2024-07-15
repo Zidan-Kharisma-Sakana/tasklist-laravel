@@ -38,7 +38,6 @@ class AuthController extends Controller
 
     public function register(RegisterRequest $request): JsonResponse
     {
-        Log::info("Register request {email}", ['email'=>$request->email]);
         $this->authService->register($request);
         return response()->json([
             'status' => 'user-created',
@@ -48,11 +47,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $credentials = $request->only(['email', 'password']);
-
         $token = Auth::attempt($credentials);
-        Log::info($credentials);
-        Log::info("Login request, token: ");
-        Log::info($token);
 
         if (!$token) {
             return response()->json([
@@ -60,7 +55,6 @@ class AuthController extends Controller
             ], 401);
         }
         $user = Auth::user();
-        Log::info($user);
         return response()->json([
             'user'         => new UserResource($user),
             'access_token' => $token,
@@ -70,14 +64,13 @@ class AuthController extends Controller
     public function logout(): Response
     {
         Auth::logout();
-
         return response()->noContent();
     }
 
+    // TODO: Implement refresh token method
     public function refresh(): JsonResponse
     {
         $token = Auth::refresh();
-
         return response()->json([
             'access_token' => $token,
         ]);

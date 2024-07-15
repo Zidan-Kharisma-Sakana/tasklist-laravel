@@ -17,8 +17,6 @@ class TaskController extends Controller
     }
 
     public function addTask(AddTaskRequest $request){
-        Log::info("Adding task");
-        Log::info($request->user());
         return $this->taskService->add($request);
     }
 
